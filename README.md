@@ -1,5 +1,5 @@
 # Blink-Watcher
 
-A simple Daemon that auto makes files on a certain directing upon changing,
+A simple Daemon that watch for a change in a directory, then it auto "make" and run the executable output file,
 
 done for a related project
