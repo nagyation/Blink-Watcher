@@ -12,50 +12,50 @@
 //Excutable file name to be run at this directory
 #define EXECUTABLE_FILE "focus"
 
-static void daemonize(void)
-{
-    pid_t pid, sid;
+/* static void daemonize(void) */
+/* { */
+/*     pid_t pid, sid; */
 
-    /* already a daemon */
-    if ( getppid() == 1 ) return;
+/*     /\* already a daemon *\/ */
+/*     if ( getppid() == 1 ) return; */
 
-    /* Fork off the parent process */
-    pid = fork();
-    if (pid < 0) {
-        exit(EXIT_FAILURE);
-    }
-    /* If we got a good PID, then we can exit the parent process. */
-    if (pid > 0) {
-        exit(EXIT_SUCCESS);
-    }
+/*     /\* Fork off the parent process *\/ */
+/*     pid = fork(); */
+/*     if (pid < 0) { */
+/*         exit(EXIT_FAILURE); */
+/*     } */
+/*     /\* If we got a good PID, then we can exit the parent process. *\/ */
+/*     if (pid > 0) { */
+/*         exit(EXIT_SUCCESS); */
+/*     } */
 
-    /* At this point we are executing as the child process */
+/*     /\* At this point we are executing as the child process *\/ */
 
-    /* Change the file mode mask */
-    umask(0);
+/*     /\* Change the file mode mask *\/ */
+/*     umask(0); */
 
-    /* Create a new SID for the child process */
-    sid = setsid();
-    if (sid < 0) {
-        exit(EXIT_FAILURE);
-    }
+/*     /\* Create a new SID for the child process *\/ */
+/*     sid = setsid(); */
+/*     if (sid < 0) { */
+/*         exit(EXIT_FAILURE); */
+/*     } */
 
-    /* Change the current working directory.  This prevents the current
-       directory from being locked; hence not being able to remove it. */
-    if ((chdir("/")) < 0) {
-        exit(EXIT_FAILURE);
-    }
+/*     /\* Change the current working directory.  This prevents the current */
+/*        directory from being locked; hence not being able to remove it. *\/ */
+/*     if ((chdir("/")) < 0) { */
+/*         exit(EXIT_FAILURE); */
+/*     } */
 
-    /* Redirect standard files to /dev/null */
-    freopen( "/dev/null", "r", stdin);
-    freopen( "/dev/null", "w", stdout);
-    freopen( "/dev/null", "w", stderr);
+/*     /\* Redirect standard files to /dev/null *\/ */
+/*     freopen( "/dev/null", "r", stdin); */
+/*     freopen( "/dev/null", "w", stdout); */
+/*     freopen( "/dev/null", "w", stderr); */
 
-}
+/* } */
 
 int main (){
 
-    daemonize();
+//    daemonize();
     // file descriptor and watch descriptor
     int fd,wd;
 
@@ -87,18 +87,19 @@ int main (){
 
 	// for non daemon debuging
 	// Name of the file
-	//printf("Name %s\n",nevent->name);
+	printf("Name %s\n",nevent->name);
 	
-	// print 1 or 0 for true and false if created or modified
-	//printf("is create %d\n", nevent->mask == IN_CREATE );
-	//printf("is modifed %d\n", nevent->mask == IN_CLOSE_WRITE );
+	//print 1 or 0 for true and false if created or modified
+	printf("is create %d\n", nevent->mask == IN_CREATE );
+	printf("is modifed %d\n", nevent->mask == IN_CLOSE_WRITE );
 
 	// make Makefile at the watch_dir
 	system("make -C " WATCH_DIR);
+	system("chmod 777 " WATCH_DIR EXECUTABLE_FILE);
 	// kill the already running app
 	system("pkill " EXECUTABLE_FILE);
 	// run the executable file
-	system(WATCH_DIR  EXECUTABLE_FILE);
+	//system(WATCH_DIR  EXECUTABLE_FILE "&");
     }
     free(nevent);
 }

@@ -1,0 +1,9 @@
+[Unit]
+Description=Blink Watch: handles building and exceuting program
+
+[Service]
+ExecStart=/usr/bin/bwatch
+Restart=always
+           
+[Install]
+WantedBy=default.target
